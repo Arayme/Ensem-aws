@@ -3,7 +3,7 @@ import streamlit as st
 import plotly.express as px
 from PIL import Image
 import openpyxl
-
+from datetime import datetime, timedelta
 
 #start
 
@@ -27,16 +27,25 @@ df_Loss = pd.read_excel(excel_file,
                     header=0)
 
 #filters
+df_Pred['Iteration'] = df_Pred['Iteration'].dt.date
+#st.markdown(f'*Available records: {df_Pred['Iteration']}*') data["expected_Date"].dt.date
+#st.dataframe(df_Pred)
 
 accuracy = df_Pred['Accuracy'].unique().tolist()
 iteration = df_Pred['Iteration'].unique().tolist()
 
-iteration_selection = st.slider('Iteration:',
+#b=min(iteration)
+#st.markdown(f'*Available records: {b}*')
+
+iteration_selection = st.slider('Dataset records range:',
                                     min_value = min(iteration),
                                     max_value = max(iteration),
-                                    value = (min(iteration),max(iteration)))
+                                    #value = (min(iteration),max(iteration)),
+                                    #st.markdown(f'*Available records: {datetime.fromtimestamp(max(iteration))}*'),
+                                    value = (min(iteration), max(iteration)),
+                                    format="MM/DD/YY")
 
-accuracy_selection = st.multiselect('Accuracy:',
+accuracy_selection = st.multiselect('Resedual value between prediction and real records:',
                                     accuracy,
                                     default = accuracy)
 
